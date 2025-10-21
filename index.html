@@ -1,0 +1,237 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2575.7">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  </style>
+</head>
+<body>
+<p class="p1">&lt;!DOCTYPE html&gt;</p>
+<p class="p1">&lt;html lang="es"&gt;</p>
+<p class="p1">&lt;head&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta charset="UTF-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;title&gt;Video Distortion Effect&lt;/title&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;style&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>* {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>margin: 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>padding: 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>box-sizing: border-box;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>body {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>width: 100vw;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>height: 100vh;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background: #000;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>overflow: hidden;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>#canvas-container {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>width: 100%;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>height: 100%;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>cursor: crosshair;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>canvas {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>display: block;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.instructions {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>position: fixed;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>bottom: 2rem;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>left: 50%;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>transform: translateX(-50%);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>color: white;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>text-align: center;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>z-index: 10;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>pointer-events: none;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.instructions p {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>margin: 0.5rem 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>opacity: 0.7;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>font-size: 0.875rem;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.instructions p:last-child {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>opacity: 0.5;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>font-size: 0.75rem;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/style&gt;</p>
+<p class="p1">&lt;/head&gt;</p>
+<p class="p1">&lt;body&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="canvas-container"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="instructions"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;p&gt;Mueve el mouse sobre el video para crear distorsiones&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;p&gt;Click para pausar/reproducir&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"&gt;&lt;/script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>// Scene setup</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const container = document.getElementById('canvas-container');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const scene = new THREE.Scene();</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>const renderer = new THREE.WebGLRenderer({ antialias: true });</p>
+<p class="p1"><span class="Apple-converted-space">        </span>renderer.setSize(window.innerWidth, window.innerHeight);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>container.appendChild(renderer.domElement);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// Mouse tracking</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const mouse = { x: 0.5, y: 0.5 };</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const targetMouse = { x: 0.5, y: 0.5 };</p>
+<p class="p1"><span class="Apple-converted-space">        </span>let isHovering = false;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// Create video element</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const video = document.createElement('video');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>video.src = 'https://video.wixstatic.com/video/859cf5_daa0cd25fc694b4d9d431924781aadad/1080p/mp4/file.mp4';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>video.crossOrigin = 'anonymous';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>video.loop = true;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>video.muted = true;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>video.playsInline = true;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// Create video texture</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const videoTexture = new THREE.VideoTexture(video);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>videoTexture.minFilter = THREE.LinearFilter;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>videoTexture.magFilter = THREE.LinearFilter;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// Play video</p>
+<p class="p1"><span class="Apple-converted-space">        </span>video.play().catch(e =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>console.log('Video autoplay failed. Click to play.');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// Vertex Shader</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const vertexShader = `</p>
+<p class="p1"><span class="Apple-converted-space">            </span>varying vec2 vUv;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>void main() {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>vUv = uv;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>`;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// Fragment Shader</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const fragmentShader = `</p>
+<p class="p1"><span class="Apple-converted-space">            </span>uniform sampler2D uTexture;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>uniform vec2 uMouse;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>uniform float uTime;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>uniform float uHover;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>varying vec2 vUv;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>void main() {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>vec2 uv = vUv;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>vec2 mouse = uMouse;</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>// Distance from mouse</p>
+<p class="p1"><span class="Apple-converted-space">                </span>float dist = distance(uv, mouse);</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>// Create ripple effect</p>
+<p class="p1"><span class="Apple-converted-space">                </span>float ripple = sin(dist * 25.0 - uTime * 4.0) * 0.5 + 0.5;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>float strength = smoothstep(0.35, 0.0, dist) * uHover;</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>// Wave distortion</p>
+<p class="p1"><span class="Apple-converted-space">                </span>vec2 distortion = vec2(</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>sin(uv.y * 12.0 + uTime * 1.5) * 0.015,</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>cos(uv.x * 12.0 + uTime * 1.5) * 0.015</p>
+<p class="p1"><span class="Apple-converted-space">                </span>) * strength * ripple;</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>// Radial distortion from mouse</p>
+<p class="p1"><span class="Apple-converted-space">                </span>vec2 dir = uv - mouse;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>float radialDist = length(dir);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>float radialStrength = sin(radialDist * 18.0 - uTime * 3.0) * strength;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>vec2 radialDistortion = normalize(dir) * radialStrength * 0.04;</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>// Circular wave</p>
+<p class="p1"><span class="Apple-converted-space">                </span>float angle = atan(dir.y, dir.x);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>vec2 circularDistortion = vec2(</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>cos(angle + uTime) * sin(radialDist * 20.0 - uTime * 2.0),</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>sin(angle + uTime) * sin(radialDist * 20.0 - uTime * 2.0)</p>
+<p class="p1"><span class="Apple-converted-space">                </span>) * strength * 0.02;</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>uv += distortion + radialDistortion + circularDistortion;</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>// Chromatic aberration</p>
+<p class="p1"><span class="Apple-converted-space">                </span>float aberration = 0.008 * strength * ripple;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>vec4 color;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>color.r = texture2D(uTexture, uv + vec2(aberration, 0.0)).r;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>color.g = texture2D(uTexture, uv).g;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>color.b = texture2D(uTexture, uv - vec2(aberration, 0.0)).b;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>color.a = 1.0;</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>gl_FragColor = color;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>`;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// Create material and mesh</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const geometry = new THREE.PlaneGeometry(2, 2);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const material = new THREE.ShaderMaterial({</p>
+<p class="p1"><span class="Apple-converted-space">            </span>uniforms: {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>uTexture: { value: videoTexture },</p>
+<p class="p1"><span class="Apple-converted-space">                </span>uMouse: { value: new THREE.Vector2(0.5, 0.5) },</p>
+<p class="p1"><span class="Apple-converted-space">                </span>uTime: { value: 0 },</p>
+<p class="p1"><span class="Apple-converted-space">                </span>uHover: { value: 0 }</p>
+<p class="p1"><span class="Apple-converted-space">            </span>},</p>
+<p class="p1"><span class="Apple-converted-space">            </span>vertexShader: vertexShader,</p>
+<p class="p1"><span class="Apple-converted-space">            </span>fragmentShader: fragmentShader</p>
+<p class="p1"><span class="Apple-converted-space">        </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>const mesh = new THREE.Mesh(geometry, material);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>scene.add(mesh);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// Event handlers</p>
+<p class="p1"><span class="Apple-converted-space">        </span>container.addEventListener('mousemove', (e) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const rect = container.getBoundingClientRect();</p>
+<p class="p1"><span class="Apple-converted-space">            </span>targetMouse.x = (e.clientX - rect.left) / rect.width;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>targetMouse.y = 1.0 - (e.clientY - rect.top) / rect.height;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>isHovering = true;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>container.addEventListener('mouseleave', () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>isHovering = false;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>container.addEventListener('click', () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (video.paused) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>video.play();</p>
+<p class="p1"><span class="Apple-converted-space">            </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>video.pause();</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// Handle resize</p>
+<p class="p1"><span class="Apple-converted-space">        </span>window.addEventListener('resize', () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>renderer.setSize(window.innerWidth, window.innerHeight);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// Animation loop</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const clock = new THREE.Clock();</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function animate() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>requestAnimationFrame(animate);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// Smooth mouse movement</p>
+<p class="p1"><span class="Apple-converted-space">            </span>mouse.x += (targetMouse.x - mouse.x) * 0.08;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>mouse.y += (targetMouse.y - mouse.y) * 0.08;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// Smooth hover effect</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const targetHover = isHovering ? 1.0 : 0.0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>material.uniforms.uHover.value += (targetHover - material.uniforms.uHover.value) * 0.1;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>material.uniforms.uMouse.value.set(mouse.x, mouse.y);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>material.uniforms.uTime.value = clock.getElapsedTime();</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>renderer.render(scene, camera);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>animate();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/script&gt;</p>
+<p class="p1">&lt;/body&gt;</p>
+<p class="p1">&lt;/html&gt;</p>
+</body>
+</html>
